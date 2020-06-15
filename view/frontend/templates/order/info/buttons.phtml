@@ -1,0 +1,96 @@
+<?php
+/**
+ * Overides Magento_Sales::order/info/buttons.phtml
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+?>
+<div class="actions">
+    <?php $_order = $block->getOrder() ?>
+    <?php if ($this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())): ?>
+        <a href="#" data-post='<?=
+        /* @noEscape */ $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+            ->getPostData($block->getReorderUrl($_order))
+        ?>' class="action order">
+            <span><?= $block->escapeHtml(__('Reorder')) ?></span>
+        </a>
+    <?php endif ?>
+    <a href="<?= $block->escapeUrl($block->getPrintUrl($_order)) ?>"
+       class="action print"
+       target="_blank"
+       rel="noopener">
+        <span><?= $block->escapeHtml(__('Print Order')) ?></span>
+    </a>
+    <?= $block->getChildHtml() ?>
+</div>
+<?php //Begin changes by Aario ?>
+<?php if ($block->isShipmentsPage()): ?>
+    <?php $shipmentNumbers = $block->getShipmentIdsForCreatingInvoice($_order); ?>
+    <?php if (count($shipmentNumbers)): ?>
+        <div class="block cart-discount"
+             id="block-create-invoice"
+             data-mage-init='{
+                "collapsible": {
+                    "active": false,
+                    "openedState": "active",
+                    "saveState": false
+                }
+            }'
+        >
+            <div class="title" data-role="title">
+                <strong
+                    accesskey=""
+                    id="block-create-invoice-heading"
+                    role="heading"
+                    aria-level="2"
+                    >
+                    <?= $block->escapeHtml(__('Create Invoice')) ?>
+                </strong>
+            </div>
+            <div class="content" data-role="content" aria-labelledby="block-create-invoice-heading">
+                <form id="create-invoice-form"
+                      action="<?= $block->escapeUrl($block->getUrl('shipmentinvoice/create')) ?>"
+                      method="post"
+                      data-mage-init='{
+                        "validation": {
+                            "rules": {
+                                "shipmentIds[]": {"required": true}
+                            }
+                        },
+                        "createInvoice": {
+                            "createButton": "button.action.create"
+                        }
+                      }'>
+                    <input type="hidden" name="orderId" value="<?= $block->escapeHtmlAttr($_order->getEntityId()) ?>"/>
+                    <div class="fieldset">
+                        <div class="field">
+                            <label for="checkboxes"><?= $block->escapeHtmlAttr(__('Shipments')) ?>:</label><br>
+                        <?php foreach ($shipmentNumbers as $shipmentId => $shipmentNumber): ?>
+                            <input type="checkbox"
+                                   class="shipment-checkbox"
+                                   id="shipment-<?= $block->escapeHtmlAttr($shipmentId) ?>"
+                                   name="shipmentIds[]"
+                                   checked="true"
+                                   value="<?= $block->escapeHtmlAttr($shipmentId) ?>"
+                            />
+                            <?= $block->escapeHtml(__('Shipment #%1', $shipmentNumber)) ?><br>
+                        <?php endforeach; ?>
+                        </div>
+                        <div class="actions-toolbar">
+                            <div class="primary">
+                                <button
+                                    class="action create primary"
+                                    type="button"
+                                    value="<?= $block->escapeHtmlAttr(__('Create Invoice')) ?>"
+                                    >
+                                    <span><?= $block->escapeHtml(__('Create Invoice')) ?></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+<?php //End changes by Aario ?>
