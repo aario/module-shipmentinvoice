@@ -1,0 +1,14 @@
+{
+    "name": "aario/module-shipmentinvoice",
+    "description": "Magento 2 ShipmentInvoice Extension",
+    "type": "magento2-module",
+    "license": [
+        "OSL-3.0"
+    ],
+    "autoload": {
+        "files": [ "registration.php" ],
+        "psr-4": {
+            "Aario\\ShipmentInvoice\\": ""
+        }
+    }
+}
