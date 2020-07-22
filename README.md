@@ -31,4 +31,4 @@ The Install script `Aario\ShipmentInvoice\Setup\InstallSchema` adds a column nam
 
 ![Screenshot of create invoice dropdown menu](/docs/screenshot-1.png?raw=true "Customers can create invoices after shipments are created by the shop owner")
 
-![Screenshot of created invoice](/docs/screenshot-1.png?raw=true "Customers can then view and print created invoice")
+![Screenshot of created invoice](/docs/screenshot-2.png?raw=true "Customers can then view and print created invoice")
