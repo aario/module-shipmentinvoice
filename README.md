@@ -27,6 +27,17 @@ Controller `Aario\ShipmentInvoice\Controller\Create` then responds to the post r
 
 The Install script `Aario\ShipmentInvoice\Setup\InstallSchema` adds a column named `invoice_id` to magento `sales_shipment` table, so in case customer has created an invoce with that shipment included in it, this will be stored in database. This allows the block to not provide those shipments to the widget, which are already included in an invoice.
 
+## How to install
+
+To install the module, inside your magento root folder run:
+```
+composer config repositories.aario-module-shipmentinvoice git "https://github.com/aario/module-shipmentinvoice.git"
+composer require aario/module-shipmentinvoice:dev-master
+bin/magento module:enable Aario_ShipmentInvoice
+bin/magento cache:clean
+bin/magento setup:upgrade
+```
+
 ## Screenshots
 
 ![Screenshot of create invoice dropdown menu](/docs/screenshot-1.png?raw=true "Customers can create invoices after shipments are created by the shop owner")
